@@ -1,0 +1,34 @@
+---
+- hosts: zeus
+  become: yes
+  #become_user: root
+  become_method: sudo
+
+  tasks:
+    - name: Add alertmanager user
+      user:
+        name: alertmanager
+        system: yes
+        createhome: no
+        shell: /bin/false
+  
+
+    - name: Add docker user to a super user
+      command: usermod -aG docker alertmanager
+ 
+   
+    - name: Installing alertmanager, Update and upgrade zeus machine (monitoring machine)
+      apt:
+        name: "{{item}}"
+        state: latest
+        update_cache: yes
+      loop:
+        - prometheus-alertmanager
+        
+        
+    - name: enable alertmanager
+      command: sudo systemctl restart prometheus-alertmanager
+
+
+        
+

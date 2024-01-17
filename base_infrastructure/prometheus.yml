@@ -1,0 +1,32 @@
+---
+#  - job_name: node_export
+ #   static_configs:
+ #     - targets: ["localhost:80"]
+#...
+#alerting:
+#  alertmanagers:
+#    - static_configs:
+#        - targets:
+#          - localhost:9093
+#rule_files:
+#  - dead-mans-snitch-rule.yml
+#  - batch-job-rules.yml
+
+global: 
+  scrape_interval: 15s 
+ 
+scrape_configs: 
+  - job_name: prometheus 
+    static_configs: 
+      - targets: ["localhost:9090"] 
+#  - job_name: eventservice 
+ #   static_configs: 
+#      - targets: ["events:9090"] 
+  - job_name: hrapp 
+    static_configs: 
+      - targets: ["54.76.151.246:9090"] 
+      - targets: ["3.248.170.234:9090"] 
+      - targets: ["52.50.187.208:9090"] 
+
+      
+

@@ -1,0 +1,124 @@
+---
+- hosts: hrapp
+  become: yes
+  #become_user: root
+  become_method: sudo
+  
+  vars:
+    version: "2.46.0"
+    #username:
+    #password:
+    AWS_ACCESS_NAME:  
+    AWS_KEY_NAME: 
+  tasks:
+    #- name: Remove directory
+    #  file:
+    #    state: absent
+    #    path: /home/ubuntu/workspace
+ 
+    - name: change directory
+      shell:
+        cmd: ls
+        chdir: /home/ubuntu/workspace/hrapp
+      
+
+    - name: list content of pwd
+      command: ls -ltr /home/ubuntu/workspace/hrapp
+      ignore_errors: yes
+
+    - name: remove hrapp folder and its content if exists
+      command: sudo rm -r hrapp
+      ignore_errors: yes
+
+ 
+    - name: Pull an image
+      ansible.builtin.shell: |
+        docker pull japostina/hrapp:v1
+
+ 
+
+    #- name: Get image ID
+    #  command: sh touch long_sh56_id && docker inspect japostina/hrapp:v1 | grep "Id" > long_sh56_id  && touch my-docker-id  && $(long_sh56_id:7:4} >  my-docker-id && echo my-docker-id
+   
+
+
+    #- name: Update system packages and clean up
+    #  shell: >
+    #     long_sh56_id=$(docker inspect japostina/hrapp:v1 | grep "Id") 
+    #     my-docker-id=${long_sh56_id:7:4} 
+    #     echo "$my-docker-id"
+
+
+
+    #- name : get container ID
+    #  shell: docker ps | grep -i ubuntu-sshd | awk '{print $1}'
+    #  register : container_ID
+
+    #- name: Execute the script
+    #  command: sh /home/test_user/test.sh
+
+    
+    #- name: Get image information
+    #  docker_image_info:
+    #    name: japostina/hrapp:v1  # Replace with the actual image name and tag
+    #  register: image_info
+
+    #- name: Display image ID
+    #  debug:
+    #    var: image_info.image_id
+  
+    #- name: Output container_ID
+    #  debug:
+    #    msg: image_info.image_id
+  
+    - name: stop container if exist and running
+      command: docker stop hrapp:v1
+      ignore_errors: yes
+
+
+
+
+    - name: Remove the container if exist and has been stopped by the previous module
+      command: docker rm hrapp:v1
+      ignore_errors: yes 
+
+    - name: Remove the image if exist , just to do a clean up before installation
+      command: docker rmi hrapp
+      ignore_errors: yes
+
+
+    #- name: Log into DockerHub using a custom config file
+    #  docker_login:
+    #    username: "{{username}}"
+     #   password: "{{password}}" 
+
+
+
+    - name: Building Remove the image if exist , just to do a clean up before installation
+      command: docker rmi hrapp:v1
+      ignore_errors: yes
+
+     
+     
+   # - name: Log out of DockerHub
+     # docker_login:
+     #   state: absent
+
+                  
+               
+
+
+
+    - name: building docker container image out of the docker image that has been built from the previous module
+      ansible.builtin.command: docker run -d -p 80:5000 -e POSTGRES_HOST=postgresdb.ctk8zg9pwc42.eu-west-1.rds.amazonaws.com -e POSTGRES_USER=kensko -e POSTGRES_DATABASE_NAME=postgres -e POSTGRES_PASSWORD=Kehinde12 -e TO_ADDRESS=olakunleoyeleye123@gmail.com -e SOURCE_ADDRESS=olakunleoyeleye123@gmail.com -e AWS_REGION_NAME=eu-west-1 -e AWS_KEY_NAME="{{AWS_KEY_NAME}}"  -e AWS_ACCESS_NAME="{{AWS_ACCESS_NAME}}" japostina/hrapp:v1 #"{{image_info.image_id}}"
+      
+
+    #- name: building docker container image out of the docker image that has been built from the previous module
+    #  ansible.builtin.command: docker run -p 80:5000 -e POSTGRES_HOST="{{POSTGRES_HOST }}" -e POSTGRES_USER="{{POSTGRES_USER }}" -e POSTGRES_DATABASE_NAME="{{ POSTGRES_DATABASE_NAME}}" -e POSTGRES_PASSWORD="{{ POSTGRES_PASSWORD}}" -e TO_ADDRESS="{{TO_ADDRESS }}" -e SOURCE_ADDRESS="{{SOURCE_ADDRESS }}" -e AWS_REGION_NAME="{{AWS_REGION_NAME }}" -e  AWS_ACCESS_KEY_ID="{{ AWS_ACCESS_KEY_ID}}" -e AWS_KEY_NAME="{{ AWS_KEY_NAME}}"
+      
+
+
+
+
+
+
