@@ -17,7 +17,6 @@ resource "aws_route_table_association" "hr-app-association-2" {
 resource "aws_route_table_association" "hr-app-association-3" {
   subnet_id      = aws_subnet.subnet_3_private.id
   route_table_id = aws_route_table.hr-app-private-rt.id
-
 }
 
 

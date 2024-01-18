@@ -140,8 +140,6 @@ sudo systemctl restart jenkins
 EOF
 }
 
-
-
 resource "aws_instance" "hr-app-5" {
   ami                    = var.ami
   key_name               = var.key_name

@@ -15,7 +15,6 @@
     - name: Add docker user to a super user
       command: usermod -aG docker node_exporter
  
-   
     - name: Installing node_exporter, Update and upgrade hrapp machine (monitoring machine)
       apt:
         name: "{{item}}"

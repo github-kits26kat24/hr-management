@@ -1,12 +1,14 @@
-#resource "aws_route53_zone" "hrapp-route53" {
-#  name = "kensko-hr-management.link"
-#    vpc {
- #   vpc_id = aws_vpc.hr-app-vpc.id
- # }
+resource "aws_route53_zone" "hrapp-route53" {
+ name = "kensko-hr-management.link"
+   vpc {
+   vpc_id = aws_vpc.hr-app-vpc.id
+ }
+}
 
-#}
-
-
+resource "aws_route53_zone_association" "hrapp-zone-association" {
+ zone_id = var.zone_id
+ vpc_id  = aws_vpc.hr-app-vpc.id
+}
 
 
 
@@ -43,9 +45,6 @@ resource "aws_route53_record" "hrapp-ns-4" {
   records = [aws_instance.hr-app-4.public_ip]
 }
 
-
-
-
 resource "aws_route53_health_check" "hrapp-health-check" {
   fqdn              = "www.kensko-hr-management.link"
   port              = 80
@@ -58,9 +57,3 @@ resource "aws_route53_health_check" "hrapp-health-check" {
     Name = "hrapp-health-check"
   }
 }
-
-
-#resource "aws_route53_zone_association" "hrapp-zone-association" {
-#  zone_id = var.zone_id
-#  vpc_id  = aws_vpc.hr-app-vpc.id
-#}

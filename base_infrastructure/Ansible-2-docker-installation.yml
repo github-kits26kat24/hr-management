@@ -14,7 +14,6 @@
  
         mode: 0755
 
-
     - name: Install GIT
       apt: 
         name: git  
@@ -62,8 +61,6 @@
   
     - name: Add docker user to a super user
       command: usermod -aG docker $USER
-
-      
 
     - name: restart docker
       service: 
